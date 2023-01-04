@@ -11,3 +11,11 @@ If the elevator received a request of going down while it is going up, the eleva
 Users can send requests at anytime.
 After understanding the requirement, we can start with our design. From the analysis above, we know that elevator needs to sort the requests by some kind of order. It’s not by timestamp, because if elevator is at floor 1, and customer A wants to go to floor 4, and B wants to go to floor 2, the elevator should not go to floor 4 first just because A sent the request first. Instead, the elevator should stop at floor 2 and let B out, then go to floor 4 to let A out. Thus, we know that the request should be sorted by the distance from the current floor and not by timestamp.
 
+## Assumptions
+Now, in real life, the elevator will finish all up requests before starting down requests. Let’s assume that going up has more priority than going down, which means that when the elevator is in IDLE state, and has both up and down requests, it will execute up requests first.
+
+I used a max heap to store all down requests and sort them by their desired floor. Similarly, a min heap to store all up requests and sort them by their desired floor.
+
+When, the requester is outside of the elevator, the elevator needs to stop at the currentFloor of the requester, before going to the desiredFloor of the requester.
+
+Here is the elevator class implementation after keeping all the above in mind.
